@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>DREAM Preterm Challenge</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{{url_for('static', filename="vendor/bootstrap/css/bootstrap.min.css")}}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="{{url_for('static', filename="css/simple-sidebar.css")}}" rel="stylesheet">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="{{url_for('static', filename="resources/demos/style.css")}}">
+
+    <!--===============================================================================================-->
+    	<link rel="icon" type="image/png" href="images/icons/favicon.ico"/>
+    <!--===============================================================================================-->
+    	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename="fonts/font-awesome-4.7.0/css/font-awesome.min.css")}}">
+    <!--===============================================================================================-->
+    	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename="vendor/animate/animate.css")}}">
+    <!--===============================================================================================-->
+    	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename="vendor/css-hamburgers/hamburgers.min.css")}}">
+    <!--===============================================================================================-->
+    	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename="vendor/select2/select2.min.css")}}">
+    <!--===============================================================================================-->
+    	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename="css/util.css")}}">
+    	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename="css/main.css")}}">
+    <!--===============================================================================================-->
+    </head>
+
+    <style>
+    body {font-family: Arial;}
+
+    /* Style the tab */
+    .tab {
+        overflow: hidden;
+        border: 1px solid #ccc;
+        background-color: #f1f1f1;
+    }
+
+    /* Style the buttons inside the tab */
+    .tab button {
+        background-color: inherit;
+        float: left;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        padding: 14px 16px;
+        transition: 0.3s;
+        font-size: 17px;
+    }
+
+    /* Change background color of buttons on hover */
+    .tab button:hover {
+        background-color: #ddd;
+    }
+
+    /* Create an active/current tablink class */
+    .tab button.active {
+        background-color: #ccc;
+    }
+
+    /* Style the tab content */
+    .tabcontent {
+        display: none;
+        padding: 6px 12px;
+        border: 1px solid #ccc;
+        border-top: none;
+    }
+    /* Three image containers (use 25% for four, and 50% for two, etc) */
+.column {
+  float: left;
+  width: 33.33%;
+  padding: 5px;
+}
+
+/* Clear floats after image containers */
+.row::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+form {
+    margin: auto;
+    width: 35%;
+}
+
+.result {
+    margin: auto;
+    width: 35%;
+    border: 1px solid #ccc;
+}
+</style>
+</head>
+
+<body>
+
+    <div class="d-flex" id="wrapper">
+
+        <!-- Sidebar -->
+        <div class="bg-light border-right" id="sidebar-wrapper">
+            <div class="sidebar-heading">Capstone Project</div>
+            <div class="list-group list-group-flush">
+                <a href="#" class="list-group-item list-group-item-action bg-light" onclick = "showPrediction()">Prediction</a>
+                <a href="#" class="list-group-item list-group-item-action bg-light" onclick = "showExploration()">Data Exploration</a>
+                <a href="#" class="list-group-item list-group-item-action bg-light" onclick = "showModelling()">Modelling</a>
+            </div>
+        </div>
+        <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+
+            <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+                <button class="btn btn-primary" id="menu-toggle">Toggle Menu</button>
+
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+            </nav>
+
+            <!-- Prediction Tab -->
+            <div id="Prediction">
+                <form action="{{ url_for('main') }}" method="POST" enctype="multipart/form-data" class="login100-form validate-form">
+					<span class="login100-form-title">
+						Patient's Sample Data CSV
+					</span>
+
+                    <fieldset>
+                        <!-- <legend>Input values:</legend>-->
+                        <input id="SampleData" name="SampleData" type="file" accept=".csv"/>
+                        <div class="container-login100-form-btn">
+                            <button class="login100-form-btn" type="submit">
+    							SUBMIT
+    						</button>
+                        </div>
+                    </fieldset>
+
+				</form>
+                <br />
+                <div class="result" align="center">
+                    {% if result %}
+                    	{% for variable, value in original_input.items() %}
+                        <br>
+                    		<b><h5>{{ variable }} : {{ (result[value]*100) }}%<h5><b><br>
+                    	{% endfor %}
+                		<!-- <br>
+                    	<br> The probability of Spontaneous Preterm Birth is:
+                   		<p style="font-size:50px">{{ result }}</p> -->
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Data Exploration Tab -->
+            <div id="DataExploration" style="display:None">
+                <div class="tab">
+                    <button class="tablinks" onclick="openCity(event, 'univariate')" id="defaultOpen">Univariate Analysis</button>
+                    <button class="tablinks" onclick="openCity(event, 'bivariate')">Bivariate Analysis</button>
+                    <button class="tablinks" onclick="openCity(event, 'featureSelect')">Feature Selection</button>
+                </div>
+
+                <div id="univariate" class="tabcontent">
+                    <br />
+                    <h3>Univariate Analysis</h3>
+
+                    <div class="row">
+                        <div class="column">
+                            <img src="{{url_for('static', filename="img/uni1.png")}}" alt="Snow" style="width:120%" style="margin-right: 500px;">
+                        </div>
+                        <div class="column">
+                            <img src="{{url_for('static', filename="img/uni2.png")}}" alt="Forest" style="width:130%; margin-left: 150px;">
+                        </div>
+                    </div>
+                    <br />
+                    <h3>Category Binning</h3>
+                    <div class="row">
+
+                        <div class="column">
+                            <img src="{{url_for('static', filename="img/uni3.png")}}" alt="Snow" style="width:150%" style="margin-right: 500px;">
+                        </div>
+                    </div>
+                    <br />
+                    <h3>Bar Plot</h3>
+                    <div class="row">
+
+                        <div class="column">
+                            <img src="{{url_for('static', filename="img/uni4.png")}}" alt="Snow" style="width:200%" style="margin-right: 500px;">
+                        </div>
+                    </div>
+                </div>
+
+                <div id="bivariate" class="tabcontent">
+                    <br />
+                    <h3>Bivariate Analysis</h3>
+                    <br />
+                    <h5>79854_at</h5>
+                    <div class="row">
+
+                        <div class="column">
+                            <img src="{{url_for('static', filename="img/bi1.png")}}" alt="Snow" style="width:200%" style="margin-right: 500px;">
+                        </div>
+                    </div>
+
+                    <h5>9732_at</h5>
+                    <div class="row">
+                        <div class="column">
+                            <img src="{{url_for('static', filename="img/bi2.png")}}" alt="Snow" style="width:200%" style="margin-right: 500px;">
+                        </div>
+                    </div>
+
+                    <h5>2841_at</h5>
+                    <div class="row">
+                        <div class="column">
+                            <img src="{{url_for('static', filename="img/bi3.png")}}" alt="Snow" style="width:200%" style="margin-right: 500px;">
+                        </div>
+                    </div>
+                </div>
+
+                <div id="featureSelect" class="tabcontent">
+                    <br />
+                    <h3>Feature Selection</h3>
+                    <br />
+                    <h5>Block HSIC Lasso</h5>
+                    <br />
+                    <p>
+                        With HSIC Lasso, Yamada et al. (2014) extend the work of Song et al. (2012) so as to avoid selecting multiple redundant features. For this purpose, we solve the following optimization problem:
+                    </p>
+                    <img src="{{url_for('static', filename="img/hsic.gif")}}" alt="Snow" style="width:40%">
+                    <p>
+                        The first term enforces selected features that are highly dependent on the phenotype; the second term penalizes selecting mutually dependent features; and the third term enforces selecting a small number of features.
+                    </p>
+                    <br />
+
+                    <h5>Lima</h5>
+                    <br />
+                    <p>
+                        Limma is a package for the analysis of gene expression data arising from microarray or RNA-seq
+technologies. A core capability is the use of linear models to assess differential expression in
+the context of multifactor designed experiments. Limma provides the ability to analyze comparisons
+between many RNA targets simultaneously. It has features that make the analyses stable even for
+experiments with small number of arrays—this is achieved by borrowing information across genes. It
+is specially designed for analysing complex experiments with a variety of experimental conditions and
+predictors. The linear model and differential expression functions are applicable to data from any
+quantitative gene expression technology including microoarrays, RNA-seq and quantitative PCR.
+Limma can handle both single-channel and two-color microarrays.
+                    </p>
+                </div>
+
+            </div>
+
+            <!-- Modelling Tab -->
+            <div id="Modelling" style="display:None">
+                <div class="tab">
+                    <button class="tablinks" onclick="openModel(event, 'modelSelect')" id="defaultOpen">Model Selection</button>
+                    <button class="tablinks" onclick="openModel(event, 'modelEval')">Model Evaluation</button>
+                    <button class="tablinks" onclick="openModel(event, 'heatMap')">Heatmap</button>
+                </div>
+
+                <div id="modelSelect" class="tabcontent">
+                    <br />
+                    <h3>Model Selection Procedure</h3>
+                    <img src="{{url_for('static', filename="img/selection.png")}}" alt="Snow" style="width:80%" height="750">
+                </div>
+
+                <div id="modelEval" class="tabcontent">
+                    <br />
+                    <h3>ROC Curve & AUPR</h3>
+                    <div class="row">
+                        <div class="column">
+                            <img src="{{url_for('static', filename="img/roc.png")}}" alt="Snow" style="width:100%;height:100%;">
+                        </div>
+                        <div class="column">
+                            <img src="{{url_for('static', filename="img/PR.png")}}" alt="Forest" style="width:100%;height: 100%;margin-left: 150px;">
+                        </div>
+                    </div>
+                    <br />
+                    <h3>Confusion Matrix</h3>
+                    <div class="row" style="width:66.67%;">
+
+                      <img src="{{url_for('static', filename="img/CM.png")}}" alt="Snow" style="height:100%;">
+
+                    </div>
+                    <br />
+                    <h3>Gain Chart</h3>
+                    <div class="row" style="width:66.67%;">
+                        <img src="{{url_for('static', filename="img/GAIN_LIFT.png")}}" alt="Snow" style="height:100%;">
+                    </div>
+                </div>
+                <div id="heatMap" class="tabcontent" style="height:100%;width:100%;">
+                  <div style="height:100%;width:100%;">
+                    <h3 style="text-align:center;">Heatmap for Control vs PPROM</h3>
+                    <iframe src="{{url_for('static', filename="1.html")}}" style="height:80%;width:100%"></iframe>
+                    <h5 style="text-align:center;">Probe Name</h5>
+                  </div>
+                </div>
+            </div>
+
+            <script>
+            function openCity(evt, cityName) {
+                var i, tabcontent, tablinks;
+                tabcontent = document.getElementsByClassName("tabcontent");
+                for (i = 0; i < tabcontent.length; i++) {
+                    tabcontent[i].style.display = "none";
+                }
+                tablinks = document.getElementsByClassName("tablinks");
+                for (i = 0; i < tablinks.length; i++) {
+                    tablinks[i].className = tablinks[i].className.replace(" active", "");
+                }
+                document.getElementById(cityName).style.display = "block";
+                evt.currentTarget.className += " active";
+            }
+
+            function openModel(evt, cityName) {
+                var i, tabcontent, tablinks;
+                tabcontent = document.getElementsByClassName("tabcontent");
+                for (i = 0; i < tabcontent.length; i++) {
+                    tabcontent[i].style.display = "none";
+                }
+                tablinks = document.getElementsByClassName("tablinks");
+                for (i = 0; i < tablinks.length; i++) {
+                    tablinks[i].className = tablinks[i].className.replace(" active", "");
+                }
+                document.getElementById(cityName).style.display = "block";
+                evt.currentTarget.className += " active";
+            }
+
+            function showPrediction() {
+                document.getElementById("Prediction").style.display="inline";
+                document.getElementById("DataExploration").style.display="None";
+                document.getElementById("Modelling").style.display="None";
+            }
+
+            function showExploration() {
+                document.getElementById("Prediction").style.display="None";
+                document.getElementById("DataExploration").style.display="inline";
+                document.getElementById("Modelling").style.display="None";
+            }
+
+            function showModelling() {
+                document.getElementById("Prediction").style.display="None";
+                document.getElementById("DataExploration").style.display="None";
+                document.getElementById("Modelling").style.display="inline";
+            }
+
+            // Get the element with id="defaultOpen" and click on it
+            document.getElementById("defaultOpen").click();
+            </script>
+
+            <!-- Bootstrap core JavaScript -->
+            <script src="{{url_for('static', filename="vendor/jquery/jquery.min.js")}}"></script>
+            <script src="{{url_for('static', filename="vendor/bootstrap/js/bootstrap.bundle.min.js")}}"></script>
+
+            <!-- Menu Toggle Script -->
+            <script>
+            $("#menu-toggle").click(function(e) {
+                e.preventDefault();
+                $("#wrapper").toggleClass("toggled");
+            });
+            </script>
+        </body>
+
+        </html>

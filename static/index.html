@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>DREAM Preterm Challenge</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/simple-sidebar.css" rel="stylesheet">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
+
+    <!--===============================================================================================-->
+    	<link rel="icon" type="image/png" href="images/icons/favicon.ico"/>
+    <!--===============================================================================================-->
+    	<link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
+    <!--===============================================================================================-->
+    	<link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+    <!--===============================================================================================-->
+    	<link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
+    <!--===============================================================================================-->
+    	<link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css">
+    <!--===============================================================================================-->
+    	<link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
+    <!--===============================================================================================-->
+    	<link rel="stylesheet" type="text/css" href="css/util.css">
+    	<link rel="stylesheet" type="text/css" href="css/main.css">
+    <!--===============================================================================================-->
+    </head>
+
+    <style>
+    body {font-family: Arial;}
+
+    /* Style the tab */
+    .tab {
+        overflow: hidden;
+        border: 1px solid #ccc;
+        background-color: #f1f1f1;
+    }
+
+    /* Style the buttons inside the tab */
+    .tab button {
+        background-color: inherit;
+        float: left;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        padding: 14px 16px;
+        transition: 0.3s;
+        font-size: 17px;
+    }
+
+    /* Change background color of buttons on hover */
+    .tab button:hover {
+        background-color: #ddd;
+    }
+
+    /* Create an active/current tablink class */
+    .tab button.active {
+        background-color: #ccc;
+    }
+
+    /* Style the tab content */
+    .tabcontent {
+        display: none;
+        padding: 6px 12px;
+        border: 1px solid #ccc;
+        border-top: none;
+    }
+    /* Three image containers (use 25% for four, and 50% for two, etc) */
+.column {
+  float: left;
+  width: 33.33%;
+  padding: 5px;
+}
+
+/* Clear floats after image containers */
+.row::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+form {
+    margin: auto;
+    width: 35%;
+}
+
+.result {
+    margin: auto;
+    width: 35%;
+    border: 1px solid #ccc;
+}
+</style>
+</head>
+
+<body>
+
+    <div class="d-flex" id="wrapper">
+
+        <!-- Sidebar -->
+        <div class="bg-light border-right" id="sidebar-wrapper">
+            <div class="sidebar-heading">Capstone Project</div>
+            <div class="list-group list-group-flush">
+                <a href="#" class="list-group-item list-group-item-action bg-light" onclick = "showPrediction()">Prediction</a>
+                <a href="#" class="list-group-item list-group-item-action bg-light" onclick = "showExploration()">Data Exploration</a>
+                <a href="#" class="list-group-item list-group-item-action bg-light" onclick = "showModelling()">Modelling</a>
+            </div>
+        </div>
+        <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+
+            <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+                <button class="btn btn-primary" id="menu-toggle">Toggle Menu</button>
+
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Link</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Dropdown
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="#">Action</a>
+                                <a class="dropdown-item" href="#">Another action</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <!-- Prediction Tab -->
+            <div id="Prediction">
+                <form action="{{ url_for('main') }}" method="POST" enctype="multipart/form-data" class="login100-form validate-form">
+					<span class="login100-form-title">
+						Patient's Sample Data CSV
+					</span>
+
+                    <fieldset>
+                        <!-- <legend>Input values:</legend>-->
+                        <input id="SampleData" name="SampleData" type="file" accept=".csv"/>
+                        <div class="container-login100-form-btn">
+                            <button class="login100-form-btn" type="submit">
+    							SUBMIT
+    						</button>
+                        </div>
+                    </fieldset>
+
+				</form>
+                <br />
+                <div class="result" align="center">
+                    {% if result %}
+                    	{% for variable, value in original_input.items() %}
+                    		<b>{{ variable }}</b> : {{ result }}
+                    	{% endfor %}
+                		<!-- <br>
+                    	<br> The probability of Spontaneous Preterm Birth is:
+                   		<p style="font-size:50px">{{ result }}</p> -->
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Data Exploration Tab -->
+            <div id="DataExploration" style="display:None">
+                <div class="tab">
+                    <button class="tablinks" onclick="openCity(event, 'univariate')" id="defaultOpen">Univariate Analysis</button>
+                    <button class="tablinks" onclick="openCity(event, 'bivariate')">Bivariate Analysis</button>
+                    <button class="tablinks" onclick="openCity(event, 'featureSelect')">Feature Selection</button>
+                </div>
+
+                <div id="univariate" class="tabcontent">
+                    <h3>Univariate Analysis</h3>
+
+                    <div class="row">
+                        <div class="column">
+                            <img src="img/uni1.png" alt="Snow" style="width:120%" style="margin-right: 500px;">
+                        </div>
+                        <div class="column">
+                            <img src="img/uni2.png" alt="Forest" style="width:130%; margin-left: 150px;">
+                        </div>
+                    </div>
+
+                    <h3>Category Binning</h3>
+                    <div class="row">
+
+                        <div class="column">
+                            <img src="img/uni3.png" alt="Snow" style="width:150%" style="margin-right: 500px;">
+                        </div>
+                    </div>
+
+                    <h3>Bar Plot</h3>
+                    <div class="row">
+
+                        <div class="column">
+                            <img src="img/uni4.png" alt="Snow" style="width:200%" style="margin-right: 500px;">
+                        </div>
+                    </div>
+                </div>
+
+                <div id="bivariate" class="tabcontent">
+                    <h3>Bivariate Analysis</h3>
+                    <h3>79854_at</h3>
+                    <div class="row">
+
+                        <div class="column">
+                            <img src="img/bi1.png" alt="Snow" style="width:200%" style="margin-right: 500px;">
+                        </div>
+                    </div>
+
+                    <h3>9732_at</h3>
+                    <div class="row">
+                        <div class="column">
+                            <img src="img/bi2.png" alt="Snow" style="width:200%" style="margin-right: 500px;">
+                        </div>
+                    </div>
+
+                    <h3>2841_at</h3>
+                    <div class="row">
+                        <div class="column">
+                            <img src="img/bi3.png" alt="Snow" style="width:200%" style="margin-right: 500px;">
+                        </div>
+                    </div>
+                </div>
+
+                <div id="featureSelect" class="tabcontent">
+                    <h3>Feature Selection</h3>
+                    <p>Tokyo is the capital of Japan.</p>
+                </div>
+
+            </div>
+
+            <!-- Modelling Tab -->
+            <div id="Modelling" style="display:None">
+                <div class="tab">
+                    <button class="tablinks" onclick="openModel(event, 'modelSelect')" id="defaultOpen">Model Selection</button>
+                    <button class="tablinks" onclick="openModel(event, 'modelEval')">Model Evaluation</button>
+                </div>
+
+                <div id="modelSelect" class="tabcontent">
+                    <h3>Model Selection</h3>
+                    <p>London is the capital city of England.</p>
+                </div>
+
+                <div id="modelEval" class="tabcontent">
+                    <h3>Model Evaluation</h3>
+                    <p>Paris is the capital of France.</p>
+                </div>
+            </div>
+
+            <script>
+            function openCity(evt, cityName) {
+                var i, tabcontent, tablinks;
+                tabcontent = document.getElementsByClassName("tabcontent");
+                for (i = 0; i < tabcontent.length; i++) {
+                    tabcontent[i].style.display = "none";
+                }
+                tablinks = document.getElementsByClassName("tablinks");
+                for (i = 0; i < tablinks.length; i++) {
+                    tablinks[i].className = tablinks[i].className.replace(" active", "");
+                }
+                document.getElementById(cityName).style.display = "block";
+                evt.currentTarget.className += " active";
+            }
+
+            function openModel(evt, cityName) {
+                var i, tabcontent, tablinks;
+                tabcontent = document.getElementsByClassName("tabcontent");
+                for (i = 0; i < tabcontent.length; i++) {
+                    tabcontent[i].style.display = "none";
+                }
+                tablinks = document.getElementsByClassName("tablinks");
+                for (i = 0; i < tablinks.length; i++) {
+                    tablinks[i].className = tablinks[i].className.replace(" active", "");
+                }
+                document.getElementById(cityName).style.display = "block";
+                evt.currentTarget.className += " active";
+            }
+
+            function showPrediction() {
+                document.getElementById("Prediction").style.display="inline";
+                document.getElementById("DataExploration").style.display="None";
+                document.getElementById("Modelling").style.display="None";
+            }
+
+            function showExploration() {
+                document.getElementById("Prediction").style.display="None";
+                document.getElementById("DataExploration").style.display="inline";
+                document.getElementById("Modelling").style.display="None";
+            }
+
+            function showModelling() {
+                document.getElementById("Prediction").style.display="None";
+                document.getElementById("DataExploration").style.display="None";
+                document.getElementById("Modelling").style.display="inline";
+            }
+
+            // Get the element with id="defaultOpen" and click on it
+            document.getElementById("defaultOpen").click();
+            </script>
+
+            <!-- Bootstrap core JavaScript -->
+            <script src="vendor/jquery/jquery.min.js"></script>
+            <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+            <!-- Menu Toggle Script -->
+            <script>
+            $("#menu-toggle").click(function(e) {
+                e.preventDefault();
+                $("#wrapper").toggleClass("toggled");
+            });
+            </script>
+        </body>
+
+        </html>
