@@ -13,3 +13,6 @@ improved generalization performance as it was the case of a small n large p prob
 User can also see the analysis and modelling part of the project throught the application. \
 
 For more information see this [presentation](https://drive.google.com/file/d/1nlHIC6AKiD4liQnnST90SpgS2mHCKWNr/view?usp=sharing).
+
+Instructions:
+flask run in terminal from the root directory
