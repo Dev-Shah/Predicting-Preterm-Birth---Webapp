@@ -1,5 +1,8 @@
 # Predicting-Preterm-Birth---Webapp
 
+## Instructions:
+flask run in terminal from the root directory
+
 • Created an interactive dashboard through which a user can get the probability of a preterm birth when they upload the
 blood sample of a woman and can also see the analysis of the dataset using Flask and JavaScript. (for testing user can upload the file in the uploads folder) \
 • Predicted probability of preterm birth (Spontaneous preterm delivery (sPTD) and Preterm premature rupture of the
@@ -12,7 +15,6 @@ improved generalization performance as it was the case of a small n large p prob
 
 User can also see the analysis and modelling part of the project throught the application. \
 
-# For more information see the [slides](https://drive.google.com/file/d/1nlHIC6AKiD4liQnnST90SpgS2mHCKWNr/view?usp=sharing).
+## For more information see the [slides](https://drive.google.com/file/d/1nlHIC6AKiD4liQnnST90SpgS2mHCKWNr/view?usp=sharing).
 
-# Instructions:
-flask run in terminal from the root directory
+
