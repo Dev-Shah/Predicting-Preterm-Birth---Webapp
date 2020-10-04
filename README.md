@@ -6,8 +6,11 @@ flask run in terminal from the root directory
 Predicting the probability of Spontaneous preterm delivery (sPTD) and Preterm premature rupture of the membrane (PPROM) births:
 ![](predicting_preterm_birth.gif)
 
-Exploratory data analysis:
+Exploratory Data Analysis:
 ![](data_exploration.gif)
+
+Model Selection:
+![](model_selection.gif)
 
 • Created an interactive dashboard through which a user can get the probability of a preterm birth when they upload the
 blood sample of a woman and can also see the analysis of the dataset using Flask and JavaScript. (for testing user can upload the file in the uploads folder) \
