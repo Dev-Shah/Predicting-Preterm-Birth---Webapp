@@ -8,7 +8,7 @@ membrane (PPROM)) using samples collected during pregnancy in women (challenge h
 Information Gain and Mann Whitney U-test, found 5 significant genes out of 29,459 genes. \
 • Developed an ensemble using Logistic Regression, LDA, XGBoost and Random forest with repeated cross-validation to get
 improved generalization performance as it was the case of a small n large p problem (450 samples & 29459 features). \
-• Achieved an AURUC score of 0.74 for PPROM and 0.55 for sPTD achieving a rank of 12 among 122 participants. \
+• Achieved an AURUC score of 0.713 for PPROM and 0.55 for sPTD achieving a rank of 12 among 122 participants. \
 
 User can also see the analysis and modelling part of the project throught the application. \
 
